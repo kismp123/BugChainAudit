@@ -54,8 +54,19 @@ level: 3
     6. Check accumulation over time (does error grow?)
   </Method>
 
+  <Severity_Rules>
+    ## Privileged Access Severity Adjustment
+    If the math issue is only triggerable by a privileged role (admin sets parameters, owner configures rates):
+    | Condition | Severity |
+    |-----------|----------|
+    | Only admin can set the vulnerable parameter | LOW |
+    | Protected by Multisig + Timelock | INFO |
+    | Semi-trusted role (keeper) triggers the calculation | MEDIUM (not HIGH) |
+    | Anyone can trigger the math path | Keep original severity |
+  </Severity_Rules>
+
   <Output_Format>
-    N. title | severity (H/M) | affected function | mathematical analysis
+    N. title | severity (H/M/L/INFO) | affected function | mathematical analysis
 
     For each finding, include:
     - The exact formula/operation

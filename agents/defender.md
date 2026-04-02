@@ -56,9 +56,23 @@ level: 2
     □ Stale approvals: NFT approval cleared after transfer?
   </Mandatory_Checks>
 
+  <Severity_Rules>
+    ## Privileged Access Severity Adjustment
+    If a finding is ONLY exploitable by a privileged role (owner, admin, guardian, keeper, relayer, timekeeper, rebalancer, deployer), apply:
+    | Condition | Severity |
+    |-----------|----------|
+    | Requires onlyOwner/onlyAdmin AND no timelock | LOW |
+    | Protected by Multisig + Timelock | INFO |
+    | Requires intentional admin abuse (fee 99%, renounce brick) | LOW |
+    | Semi-trusted role (artist, creator, keeper) can harm users | MEDIUM (not HIGH) |
+    | No access control (anyone can call) | Keep original severity |
+
+    Do NOT mark admin-dependent issues as HIGH. Only mark as HIGH when any external user can exploit.
+  </Severity_Rules>
+
   <Output_Format>
     Number each finding:
-    N. title | severity (H/M) | affected function | description
+    N. title | severity (H/M/L/INFO) | affected function | description
 
     Minimum 10 findings. Recall > Precision.
     Focus on concrete code locations with line references.

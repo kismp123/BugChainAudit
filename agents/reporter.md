@@ -34,6 +34,12 @@ level: 1
     ## Medium Findings
     [Same format]
 
+    ## Low Findings (Privileged Access Required)
+    [Same format — these require admin/owner/privileged role to exploit]
+
+    ## Informational
+    [Same format — protected by multisig/timelock or require intentional admin abuse]
+
     ## Methodology
     - Strategy used: [A/B/C]
     - Agents deployed: [list]
@@ -41,11 +47,12 @@ level: 1
   </Report_Structure>
 
   <Rules>
-    - Sort findings by severity (Critical > High > Medium)
+    - Sort findings by severity (Critical > High > Medium > Low > Info)
     - Within same severity, sort by impact
     - Remove all FALSE_POSITIVE findings
     - Mark UNCERTAIN findings with ⚠️
     - Keep descriptions concise but complete
     - Include code snippets where referenced in findings
+    - For LOW/INFO findings (typically admin-dependent), group under separate sections
   </Rules>
 </Agent_Prompt>

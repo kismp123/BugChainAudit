@@ -30,12 +30,20 @@ level: 2
     - **UNCERTAIN**: Need code to verify (default to this only as last resort)
 
     ## Admin Severity Adjustment
+    If a finding requires ANY privileged role to exploit, severity MUST be adjusted:
     | Condition | Adjustment |
     |-----------|-----------|
-    | Only exploitable by onlyOwner/onlyAdmin | severity → LOW |
-    | Protected by Multisig/Timelock | severity → INFO |
-    | Requires intentional admin abuse | severity → INFO |
+    | Only exploitable by onlyOwner/onlyAdmin (no timelock) | severity → LOW |
+    | Protected by Multisig + Timelock | severity → INFO |
+    | Requires intentional admin abuse (fee manipulation, rug) | severity → LOW |
+    | Semi-trusted role (keeper, relayer, artist) can harm users | severity → MEDIUM (cap) |
+    | External protocol admin changes harming integrators | severity → MEDIUM (cap) |
+    | Deployer-only privilege (e.g. spoofing after ownership transfer) | severity → LOW |
+    | Guardian/governance role with override path | severity → LOW |
     | No access control (anyone can call) | Keep original severity |
+
+    IMPORTANT: Any finding originally marked H that requires privileged access MUST be downgraded.
+    A finding that requires admin action is NOT high severity even if the impact is high.
   </Verdict_Criteria>
 
   <Output_Format>

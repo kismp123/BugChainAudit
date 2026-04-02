@@ -80,9 +80,18 @@ For the top 5 highest-value functions:
 - Parameter change in one contract breaks assumptions in another?
 - External protocol (Uniswap, Aave, Convex) changes operator/pauses/shuts down — does this code handle it?
 
+## Severity Rules — Privileged Access Adjustment
+If a finding is ONLY exploitable by a privileged role (owner, admin, guardian, keeper, relayer, deployer, rebalancer, multisig), you MUST lower severity:
+- onlyOwner/onlyAdmin required → LOW (not H/M)
+- Multisig + Timelock protection → INFO
+- Intentional admin abuse (fee 99%, rug pull) → LOW
+- Semi-trusted role (keeper, relayer) can harm users → MEDIUM at most
+- No access control needed → Keep original severity
+Do NOT report admin-dependent issues as HIGH. HIGH is reserved for issues any external user can exploit.
+
 ## Output
-Numbered list of ALL MEDIUM+ findings.
-Format: N. title | severity (H/M) | affected function | description
+Numbered list of ALL findings.
+Format: N. title | severity (H/M/L/INFO) | affected function | description
 Minimum 25 findings. Recall > Precision (finding FP is OK, missing a real bug is not).
 IMPORTANT: Include ALL ✗ items from Step 3 in your findings.
 

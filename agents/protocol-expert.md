@@ -73,9 +73,22 @@ level: 2
     □ Constant mismatch: blocksPerYear for target chain?
   </Mandatory_Checks>
 
+  <Severity_Rules>
+    ## Privileged Access Severity Adjustment
+    If a finding requires a privileged role to exploit (admin, owner, guardian, keeper, governance multisig):
+    | Condition | Severity |
+    |-----------|----------|
+    | Only exploitable by onlyOwner/onlyAdmin | LOW |
+    | Protected by Multisig + Timelock | INFO |
+    | Requires intentional admin abuse | LOW |
+    | Semi-trusted role (keeper, relayer) can harm users | MEDIUM (not HIGH) |
+    | External protocol admin changes affecting integrators | MEDIUM (not HIGH) |
+    | No access control (anyone can call) | Keep original severity |
+  </Severity_Rules>
+
   <Output_Format>
     Number each finding:
-    N. title | severity (H/M) | affected function | description
+    N. title | severity (H/M/L/INFO) | affected function | description
 
     Minimum 10 findings. Recall > Precision.
     Reference specific protocol patterns and known exploit precedents.

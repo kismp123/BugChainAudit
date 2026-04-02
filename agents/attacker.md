@@ -49,9 +49,23 @@ level: 2
     □ Quorum manipulation: lower total voting power via delegate→undelegate to reach quorum?
   </Mandatory_Checks>
 
+  <Severity_Rules>
+    ## Privileged Access Severity Adjustment
+    If the attack requires a privileged role (owner, admin, guardian, keeper, relayer, deployer, rebalancer):
+    | Condition | Severity |
+    |-----------|----------|
+    | Only exploitable by onlyOwner/onlyAdmin | LOW |
+    | Protected by Multisig + Timelock | INFO |
+    | Requires intentional admin malice (rug pull, fee manipulation) | LOW |
+    | Semi-trusted role (keeper, relayer) can extract value | MEDIUM (not HIGH) |
+    | No special permissions needed | Keep original severity |
+
+    Adversarial admin scenarios (Step 6 "front-runs admin tx") are valid to CHECK but severity must reflect the privilege requirement.
+  </Severity_Rules>
+
   <Output_Format>
     Number each finding:
-    N. title | severity (H/M) | affected function | attack scenario with step-by-step
+    N. title | severity (H/M/L/INFO) | affected function | attack scenario with step-by-step
 
     Minimum 10 findings. Recall > Precision.
     For each finding, include a concrete attack sequence (step 1, step 2, ...).
