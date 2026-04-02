@@ -1,0 +1,20 @@
+---
+keywords: bridge,crosschain,LayerZero,lzReceive,relayer,IBC,wormhole,axelar,ccip,sendMsg
+---
+- Cross-chain address format: non-EVM address handling? Encoding mismatch?
+- Cross-chain decimal mismatch: different decimals per chain? Scaling not applied?
+- Bridge token pull: missing transferFrom before bridge call?
+- Bridge message failure: no retry mechanism? Funds stuck?
+- Bridge asset support: bridge supports all listed assets?
+- Rebalancer drain: rebalancer extracts unlimited funds? No cap?
+- Signature reuse: refinance/addTranche signature replayed? Missing nonce/expiry?
+- Spoofed sender: deployer retains spoofing ability after ownership transfer?
+- LayerZero _toAddress: must be exactly 20 bytes? Oversized causes silent failure?
+- Cross-chain fee double-charge: fee charged on both source and destination in _handleERC20Received?
+- Cross-chain WETH unnecessary fee: WETH cross-chain swap charges fee that native ETH doesn't?
+- Bridge message forgery: watcher/relayer can forge arbitrary messages to drain bridge?
+- Recalled transfer token lock: recalled/cancelled cross-chain ERC20 transfer locks tokens in bridge?
+- Removed bridge agent processing: removed/deactivated bridge agent still processes inbound messages? ~grep:removeBranchBridgeAgent,toggleBranchBridgeAgent,isBridgeAgent,executionState~
+- Cross-chain address mismatch: contract account address differs across chains — CREATE2 same but CREATE differs? ~grep:hTokenBranch,localAddress,globalAddress,getLocalToken~
+- Cross-chain dApp address divergence: dApp with different addresses per chain breaks settlement/redeem? Hardcoded source address doesn't match destination? ~grep:settlement,redeem,_srcAddress,trustedRemoteLookup~
+- L2 bridge function incompatibility: msg.value handling differs on Arbitrum/L2? callOutAndBridge reverts on specific L2 due to gas/value semantics? ~grep:callOutAndBridge,msg.value,_gasLimit,retryableTicket~

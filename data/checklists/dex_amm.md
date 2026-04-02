@@ -1,0 +1,33 @@
+---
+keywords: swap,pair,reserve,AMM,liquidity,pool,router,UniswapV2,UniswapV3,Curve,Balancer
+---
+- LP token fixed valuation: LP always valued at fixed ratio? Incorrect during maturity?
+- Token ordering assumption: oracle/pool assumes specific token order?
+- Curve LP oracle: get_virtual_price * min(prices) manipulable?
+- Native ETH Curve LP: some pools use raw ETH not WETH?
+- Intermediate overflow: FullMath/MulDiv intermediate multiplication overflow?
+- Router fee-on-transfer: router assumes transfer==received?
+- Utilization curve exploit: utilization rate manipulation extracts from bonding curve?
+- ERC777 deposit cap bypass: ERC777 callback re-enters deposit to bypass cap?
+- Token impersonation: can attacker deploy token with same name to spoof stable/wrapped token?
+- TVL calculation zero: can token0TVL/token1TVL be zero causing division errors or wrong pricing?
+- Hardcoded peg: hardcoded USD peg (1:1) breaks when stablecoin depegs?
+- Period size on pair creation: is period size/observation window initialized on new pair creation?
+- getUnderlyingPrice error handling: should return 0 on error but reverts instead? Or vice versa?
+- Self-swap manipulation: can token be swapped with itself to manipulate price?
+- Partial vs full sell: is selling partial amounts more profitable than full? Price impact asymmetry?
+- Gamma zero: does gamma=0 allow swaps without price change for next trade?
+- Cross-chain WETH fees: unnecessary fee charged on WETH cross-chain swaps?
+- Airdrop before mint: does airdrop increase supply before mint, inflating price?
+- Mint bricking: can repeated mints brick specific token sale/option slots?
+- LP add slippage: addLiquidity in exercise/deposit lacks slippage protection? Sandwichable?
+- Fee-on-transfer exact output break: swapSupportingFeeOnInputTokens path loses exact output functionality? User receives less than specified?
+- Excess input absorption: swap/mint consumes more input tokens than output justifies? Difference not refunded to user?
+- Volatility estimator bias: adaptive fee uses biased estimator (missing Bessel's correction n/(n-1))? Systematically over/under-estimates volatility?
+- Third-party liquidity cooldown griefing: mint/addLiquidity on behalf of another address resets or extends their cooldown timer? Blocks victim from removing liquidity?
+- Observation index overflow: TWAP observation array index arithmetic wraps around uint16/uint32? Accesses uninitialized slot causing revert or wrong average?
+- Tick range symmetry at edge spacing: position tick bounds asymmetric when tick spacing is 1 or small? Off-by-one in isLowerSided or modulo calculation creates zero-width or wrong-side position?
+- Balancer composable pool invariant: BPT included in totalSupply but excluded from invariant? Wrong virtualSupply used in rate/share calculation?
+- Imbalanced pool restoration LP loss: restoring liquidity after emergency to imbalanced pool mints fewer LP tokens than originally withdrawn? Value permanently lost to pool imbalance?
+- Curve V2 reward token is pool token: reward token (CRV/CVX) is also a pool constituent token? Reinvest/sellRewardTokens sells pool's own token breaking LP ratio? ~grep:rewardToken,reinvest,sellRewardTokens,REWARD_TOKEN~
+- Curve V2 use_eth param missing: remove_liquidity/remove_liquidity_one_coin called without use_eth=true on native ETH pools? Reverts or returns WETH when caller expects ETH? ~grep:use_eth,remove_liquidity,remove_liquidity_one_coin~

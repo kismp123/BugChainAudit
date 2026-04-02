@@ -1,0 +1,17 @@
+---
+keywords: perpetual,position,leg,chunkKey,tokenType,option,strike,delta,expiry,margin
+---
+- OTM delta zero: deep OTM delta=0 breaks hedging? Division by zero?
+- Position data mismatch: PositionManager stores wrong strike/parameters?
+- Bit encoding: packed uint256 field offsets correct? chunkKey/poolId collision?
+- Math sign: premium add vs deduct? validate before/after bit flip?
+- Duplicate ID: tokenId/positionId array duplicate check? solvency 2x?
+- Factory deploy: CREATE2 salt unique? Deployment uses spot price?
+- Price band asymmetry: price band caps apply to orders but not liquidations?
+- Partial fill settlement: PartialFill type fails to settle?
+- Funding rate skew: rate based on single maker's skew but applied market-wide?
+- Admin fee backdoor: external protocol admin adjusts fees harming integrators?
+- ERC5095 non-compliance: withdraw/redeem doesn't match spec?
+- Delegated update privilege: anyone can call update()/modify() on behalf of another account? Attacker closes or alters victim's position without authorization?
+- Oracle fee drain via atomic ops: deposit+withdraw atomically without triggering settlement? Oracle/keeper fees extracted from protocol without actual price commits?
+- Stale oracle commit after grace: oracle commits accepted after grace period even though no user requested them? Stale price applied to pending settlements?

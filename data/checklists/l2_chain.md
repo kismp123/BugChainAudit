@@ -1,0 +1,11 @@
+---
+keywords: sequencer,L2,arbSys,optimism,ArbSys,L1Block,zkSync,Arbitrum,Blast
+---
+- L2 block.number: differs from L1? timestamp vs block number assumptions?
+- Sequencer downtime: Chainlink feeds stale, auctions unfair?
+- Chain opcode: PUSH0 unsupported on some L2s? .transfer() fails on zkSync?
+- Re-org: CREATE2/clone address predictable across re-orgs?
+- L1/L2 integration mismatch: Convex/Aura pool IDs differ across chains?
+- Double scaling: precision multiplier applied redundantly on L2?
+- ETH secondary: msg.value not populated when ETH is secondary token?
+- Solidity upgrade breaking: 0.7→0.8 breaks existing L2 functions?

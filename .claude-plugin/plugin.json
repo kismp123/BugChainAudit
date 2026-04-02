@@ -1,0 +1,18 @@
+{
+  "name": "BugChainAudit",
+  "version": "0.1.0",
+  "description": "Agentic smart contract security audit for Claude Code",
+  "author": {
+    "name": "gegul"
+  },
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "plugin",
+    "smart-contract",
+    "security-audit",
+    "multi-agent"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,26 @@
+---
+keywords: convex,IConvex,cvx,CRV,ICurve,virtualPrice,StableSwap,ICurvePool,IBooster
+---
+### Convex/Curve
+- Convex pools can be shutdown — staking/withdrawal may revert after shutdown
+- CRV lock timing uses 1-week epochs, not exact timestamps
+- virtualPrice is manipulable via large deposits/withdrawals
+- Pool shutdown prevents new deposits but allows withdrawals
+- Curve get_dy vs exchange: get_dy returns pre-fee amount
+- remove_liquidity_one_coin has high slippage on imbalanced pools
+- Curve V2 pools use internal oracle (price_oracle vs price_scale)
+- CurveTricrypto: token ordering is NOT guaranteed — don't assume WETH is last
+- Curve LP oracle: get_virtual_price * min(oracle prices) is manipulable
+- Native ETH Curve LP: some pools use raw ETH not WETH — msg.value handling differs
+- Convex on Arbitrum: booster/pool IDs differ from mainnet, some functions unavailable
+- CVX/AURA reward cliff: distribution formula changes at each cliff boundary — off-by-one at cliff end
+- Convex/Aura wrapper: accExtPerShare must track per-token rewards including AuraStash extra rewards
+- Hanging approvals from swap helpers can bypass reward fee deductions
+- Convex operator change: booster.poolInfo(pid).crvRewards can change if Convex changes operator — hardcoded operator/reward contract address breaks claimRewards after migration
+- Convex crvRewardsContract.getReward() callable by anyone directly — bypasses wrapper accounting if wrapper assumes only it calls getReward; attacker calls getReward(vaultAddr) to desync reward tracking
+- Convex pool shutdown edge: after pool shutdown, reward claims may still work but deposit/stake reverts — contracts assuming atomic deposit+stake fail; withdrawal-only path must handle shutdown state
+- CREATE2 vault deployment: if vault uses CREATE2 with predictable salt, attacker can front-run deployment in a reorg — deposit to predicted address pre-deployment, then deployer's CREATE2 overwrites but funds are already sent to attacker's pre-deployed contract
+- Curve V2 use_eth parameter: remove_liquidity/remove_liquidity_one_coin on Curve V2 pools require use_eth=true to receive native ETH — omitting it returns WETH or reverts; wrapper must handle both paths
+- Curve single-sided deposit incompatibility: some Curve pools (meta pools, factory pools, certain V2 pools) don't support single-sided add_liquidity — strategy assuming single-sided deposit reverts on incompatible pools
+- Curve nested/composable pool withdrawal: emergency withdraw on nested pools (e.g. Convex→Curve→underlying) may only exit one layer — full unwinding requires multi-step withdrawal through each composable layer
+- Curve V2 cross-chain broken: Curve V2 pool interfaces differ across chains (Arbitrum, Optimism) — function signatures, use_eth availability, and pool registry addresses may not match mainnet; leverage vaults hardcoding mainnet interface break on sidechains

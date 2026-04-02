@@ -1,0 +1,59 @@
+---
+keywords: always
+---
+- Balance-gift: balanceOf(address(this)) for accounting?
+- Precision floor: a/b where a<b→0 propagates?
+- Division-before-multiplication: (a/b)*c loses precision vs (a*c)/b?
+- Remaining underflow: subtraction of accumulated from total underflows when accumulated > total?
+- First depositor: totalSupply=0 reward drain?
+- Reentrancy: external calls before state updates? Callback reentrancy?
+- Access control: missing onlyOwner/auth on critical functions?
+- Parameter zero: all setters with 0/max?
+- Fee-on-transfer: router assumes transfer==received?
+- Flash loan: atomic borrow→manipulate→repay?
+- Stuck funds: no withdrawal path for deposited tokens?
+- Unsafe downcast: uint96/uint128 silently truncates?
+- Admin abuse: fee 99%? renounce brick?
+- Temporal coupling: param change before dependent calc settled?
+- Total supply zero: all shares burned → division by zero?
+- Modifier collision: nonReentrant blocks legitimate cross-contract flow?
+- Pause bypass: redeem/withdraw callable when paused? Missing whenNotPaused?
+- Initializer mismatch: initializer vs onlyInitializing? Proxy re-init?
+- Non-standard tokens: ERC20 not returning bool? fee-on-transfer? rebasing? ERC777 hooks?
+- Zero-transfer DoS: reward loop reverts on 0 transfer?
+- OOG griefing: unbounded loop over user state?
+- encodePacked collision: dynamic types create hash collisions?
+- Deadline missing: swap/auction lacks deadline parameter?
+- Protocol fee locked: accumulated fee with no withdrawal function?
+- Constructor vs setter inconsistency: initial value differs from setter validation?
+- Counter off-by-one: counter starts at 0 but mapping expects 1-based index? Index collision?
+- Review status overwrite: re-registration doesn't reset approval/rejection status?
+- Status overwrite on batch: batch review overwrites already-accepted entries?
+- safeApprove(0) blocking: existing non-zero approval blocks new approve? Need approve(0) first?
+- Role revoke set removal: _revokeRole doesn't remove from roleMember enumerable set?
+- Call vs transfer: using transfer() instead of call() for ETH — 2300 gas limit reverts with contracts?
+- Staker/keeper griefing: malicious staker actions cause keeper gas waste or repeated reverts?
+- Token transfer escape: transferring tokens to escape sanctions/blacklisting/restrictions?
+- Multi-token blacklist DoS: one blacklisted token in batch deposit/withdraw blocks entire multi-token operation? ~grep:blacklist,isBlacklisted,multiWithdraw,multiDeposit,forEach~
+- Liquidation blacklist revert: liquidation fails if borrower is blacklisted (USDC/USDT) — leftover collateral transfer to blacklisted address reverts? ~grep:liquidat,safeTransfer,blacklist,collateral~
+- Rebasing token incompatibility: contract doesn't handle rebasing tokens (balance changes without transfers)?
+- Codehash check gap: codehash validation doesn't account for non-empty but non-contract addresses?
+- Math approximation accuracy: custom math (exp, log, sqrt, sigmoid) — approximation error bounds? Edge inputs where approximation breaks?
+- Semi-trusted role abuse: artist/creator/keeper role can change params that harm existing users? Extend time windows, change fees, alter properties post-deployment?
+- Emergency mechanism reachability: inherits Pausable but pause/unpause not callable? Dead emergency code?
+- Stale reference after admin update: global address (fee recipient, treasury) updated in parent — child/clone contracts reflect update or cache stale value?
+- Token address existence check: safeTransfer succeeds on address with no code? Token address validated at init?
+- CREATE/CREATE2 reorg front-running: predictable deployment address (CREATE nonce-based or CREATE2 salt-based) with pre-deployment deposits? Attacker deploys own contract at same address in reorg to steal funds sent before canonical deployment? Vault/wallet factory where users deposit to predicted address before deployment confirmed?
+- External reward direct-call bypass: reward contract (e.g. getReward) callable by anyone directly? Breaks wrapper/vault accounting that assumes only it triggers reward claims?
+- Two-address token bypass: tokens with dual entry points (e.g. SNX proxy+impl) bypass withdrawal/blacklist checks? withdrawOtherToken check evadable?
+- Leftover token refund: swap/router retains excess tokens after operation? Unused input tokens not returned to user?
+- Fee path inconsistency: ETH vs ERC20 paths charge different fees? One path bypasses fee logic entirely?
+- Refund destination in delegated/batch calls: refund sent to msg.sender but msg.sender is router/factory, not end user? Batch claim/mint refund to contract instead of caller?
+- Supply cap enforcement: constructor/init can set initialSupply > maxSupply? Mint function checks cap but initial mint doesn't?
+- Payable but reverts on value: function marked payable but reverts when msg.value > 0? Misleads callers into sending ETH that gets stuck or reverted?
+- Dust accumulation in reinvestment: rounding dust compounds over repeated reinvest/compound cycles? totalPoolClaim diverges from actual balance over time?
+- Reward-pool token overlap: reinvest fails when reward token equals pool/underlying token? Self-swap reverts or zero-amount edge case blocks compounding?
+- Unwrap revert blocks critical path: WETH→ETH unwrap reverts in multicall/invoker/router — blocks liquidation or withdrawal for all batched users?
+- Cross-chain integration incompatibility: protocol integrates external protocol (e.g. Curve V2, Balancer) that doesn't exist or behaves differently on sidechains/L2s? Hardcoded addresses or missing pool types?
+- Rescue/recovery function broken: rescueTokens/recoverERC20 doesn't work due to wrong balance check, blocked by reentrancy guard, or excluded token list too broad?
+- Credential override by peer role: multiple role providers/registrars can overwrite each other's settings (expiry, permissions)? Later provider downgrades protection set by earlier one?

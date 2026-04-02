@@ -1,0 +1,40 @@
+---
+keywords: stake,reward,distribute,epoch,gauge,boost,claim,vest,lock,delegate
+---
+- Reward frontrun: stake just before distributeRewards, unstake after?
+- Slash frontrun: exit before slash() lands?
+- Flash staking: flash-loan→stake→claim→unstake→repay?
+- Early bird: first staker captures disproportionate rewards?
+- Reward cliff boundary: CVX/AURA distribution formula changes at cliff?
+- Wrapper extra rewards: wrapper tracks all extra reward tokens (AuraStash)?
+- Approval bypass fees: hanging approvals from swap helpers bypass fee deductions?
+- Vesting double-spend: same vesting claimed twice? Param change between claims?
+- Cooldown bypass: token transfer resets cooldown timer?
+- Paused yield collection: unable to collect yield when paused? No emergency claim?
+- Position top-up blocked: position can only be topped up once? State not reset for repeat?
+- Withdrawal fee extension griefing: griefer extends higher fee period?
+- Role revoke incomplete: _revokeRole doesn't remove from roleMember set?
+- Delisted pool fees stuck: fees in reward handler stuck after pool delisting?
+- Weight update distribution: amount distributed inaccurate when updating gauge/pool weights?
+- Keeper gauge removal DoS: removing keeper gauge causes DoS on remaining claims?
+- Strategy reward theft: strategy in vault can steal more rewards than designed?
+- Unstake underflow: unstake/unstakeFor reverts from uint underflow of strategiesTotalStaked?
+- Inactive distributor revert: _sendToDistributor reverts if one distributor inactive?
+- Timekeeper change epoch: changing timekeeper messes up epoch tracking?
+- Duplicate active traders: activeTraders array contains duplicate or inactive entries?
+- Migration frontrun: state migration function exposed to frontrun? Attacker populates first?
+- Distributor replacement loss: accrued but unclaimed rewards lost when admin replaces reward distributor?
+- veNFT merge reward loss: merging ve-tokens loses unclaimed rewards for merged position?
+- Voting power decay stale: emission share calculation uses stale voting power without decay?
+- Epoch emission calc error: update_period weekly emission uses wrong base (circulating vs total)?
+- Max lock irreversible: max_lock flag cannot be disabled once set? Voter locked permanently?
+- Option discount scaling: large option exercise gets higher discount than intended (nonlinear scaling)?
+- Bankruptcy reward loss: unclaimed rewards lost when bucket/pool goes bankrupt?
+- Delegation reward theft: unallocated delegation budget stolen by last-minute delegate?
+- Position NFT spam DoS: insignificant positions created to exhaust reward distribution gas?
+- Delegation reward exclusion: delegation rewards not counted toward granting fund total?
+- First staker checkpoint: first AMM/LP staker misses checkpoint — loses initial rewards?
+- Uninitialised pool timestamp: poolLastUpdate not set on pool creation — inflated reward claims?
+- View vs state inconsistency: view function reports different rewards than actual claim?
+- Inflation re-init: startInflation() callable again — bypasses or resets inflation schedule?
+- Reward claim reentrancy theft: external call during reward claim (token transfer, callback) allows reentrancy to claim rewards twice before state update?

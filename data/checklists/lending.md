@@ -1,0 +1,55 @@
+---
+keywords: borrow,liquidat,collateral,healthFactor,exchangeRate,ERC4626,vault,strategy,cToken,aToken,lend
+---
+- Liquidation priority: lowest LTV collateral first? Cherry-pick profitable collateral?
+- Post-exit liquidation: liquidated immediately after exiting market?
+- Bad debt propagation: loss cascades to other positions?
+- Dust deposit exploit: 1 wei deposit captures accumulated yield?
+- Whale rate manipulation: large borrow/repay manipulates rates?
+- ERC4626 round-trip: convertToShares(convertToAssets(x)) == x?
+- Liquidation reward: distribute pending rewards before seizure?
+- Liquidation caller restriction: only specific callers can liquidate?
+- Average zero: average assets/supply=0 causes utilization=0 gaming?
+- Loop limit DoS: maxLoops causes legitimate operations to fail?
+- Emergency mode: withdraw works during strategy loss?
+- External protocol caps: upstream vault capacity caps blocking deposits?
+- Heartbeat mismatch: staleness vs Chainlink heartbeat?
+- Interface selector mismatch: ETH-native vs ERC20 wrapper uses wrong function signature? Reverts?
+- Constant mismatch: blocksPerYear wrong for target chain?
+- Self-liquidation: open + liquidate own position in same tx?
+- Deprecated market liquidation: can positions in deprecated/delisted markets still be liquidated?
+- Low-activity market anti-liquidation: user enters illiquid market to block own liquidation?
+- Native wrapper return mismatch: native ETH wrapper functions return nothing — caller decodes non-existing return?
+- Action replay blocked: one-time action can't be repeated? State not reset for subsequent calls?
+- Decimals >18: decimal multiplier assumes ≤18 — tokens with >18 decimals cause underflow?
+- Fee param ordering: fee calculation reverts when min > current? Missing bounds check on setters?
+- Interest rate out of factory bounds: setter accepts values outside factory-enforced min/max range?
+- Withdrawal batch expiry: borrower can't repay pending withdrawal debt before cycle expiry?
+- Market removal sanction immunity: removing market from controller grants sanction/blacklist immunity?
+- collectFees state order: _writeState before asset transfer causes wrong delinquency calculation?
+- CREATE2 silent failure: create2WithStoredInitCode silently fails if deployment reverts?
+- Utilization >100% DoS: accrueInterest reverts when utilization exceeds 100% — borrow rate overflow?
+- Payment timing manipulation: borrower manipulates payment timing to self-default loan later?
+- Function selector mismatch: rollover/forwarder uses wrong selector for target contract?
+- Escrow fund bricking: escrowed funds permanently locked with no withdrawal path?
+- Approval not reset: flash rollover doesn't reset approval to 0 after repay (non-zero approval tokens)?
+- Callback interface check: repayLoanCallback try-catch doesn't catch non-implementing address?
+- SqrtPriceX96 overflow: direct multiplication with sqrtPriceX96 overflows uint256?
+- Payment cycle span: payment cycle duration spans ~2 cycles blocking borrower repayment?
+- Withdraw/redeem transfer-before-burn: token transfer (sUSD/USDC/underlying) sent before burning user shares/balance? Callback-capable token (ERC777, USDC hooks) enables reentrancy to drain reserve — withdraw again while balance not yet burned?
+- Nested pool emergency withdraw: emergency exit only unwinds one layer of nested strategy (e.g. Convex→Curve→underlying)? Remaining layers leave funds stuck in intermediate protocol?
+- Depositor payable inconsistency: depositFromNotional/deposit function marked payable but implementation reverts on msg.value > 0? Callers lose ETH or tx reverts unexpectedly?
+- External protocol withdrawal limit: integrated protocol (Lido, Kelp, EtherFi) has withdrawal caps/limits/cooldowns that brick vault withdraw path? Edge cases where request size exceeds protocol limit?
+- Liquidator self-DoS: liquidating another user's position changes liquidator's own state (e.g. account array) causing their own future liquidation to revert?
+- Premature collateral check: collateralization verified at initiateWithdraw before withdrawal actually completes? Account left undercollateralized between initiate and finalize?
+- Market closure withdrawal lock: fixed-term/lock period check still blocks withdrawals after market is closed or deprecated? Lenders permanently locked out? ~grep:isClosed,closeMarket,fixedTerm,expiry,withdraw~
+- Withdrawal timing incentive misalignment: users penalized for withdrawing immediately after market close (lose accrued interest)? Incentivizes delay that harms protocol? ~grep:closeMarket,isClosed,withdraw,queueWithdrawal,block.timestamp~
+- Wrong timestamp in term check: time comparison uses block.timestamp instead of batch/request expiry? Or vice versa? Wrong variable in temporal guard? ~grep:block.timestamp,expiry,fixedTermEndTime,maturityDate,batch~
+- Fee inconsistency across repay paths: different repay functions (repay, repayAndDeposit, closeMarket, liquidation) charge different fee rates to lenders? ~grep:repay(,repayOnBehalf,repayAndDeposit,closeBorrow,closeMarket,protocolFeeBips~
+- Over-withdrawal last-user DoS: early withdrawers extract slightly more than pro-rata share due to rounding? Compounds until last user's withdrawal reverts on insufficient balance?
+- Borrower param update during fixed term: borrower can change interest rate, capacity, or other terms during locked/fixed period when params should be immutable?
+- Subaccount execute not payable: subaccount/proxy execute function lacks payable — ETH-based operations fail? ~grep:execute,subAccount,payable,msg.value~
+- Insurance credit reset: insurance/reserve account credit resetable by re-deposit? Deposit resets accumulated credit to zero? ~grep:insurance,deposit,credit,earnUSDC,netValue~
+- Repayment refund destination: excess repayment refund sent to `to` param instead of msg.sender? Caller loses overpayment? ~grep:repay,msg.sender,to,refund,excess~
+- No stablecoin burn mechanism: repayments accumulate stablecoin in contract but no burn path — causes oversupply/depeg? ~grep:burn,repay,JUSD,totalSupply~
+- Internal transfer validation bypass: internal/subaccount transfer bypasses isDepositAllowed or position validation? ~grep:internalTransfer,isDepositAllowed,subAccount,transfer~

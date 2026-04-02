@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "BugChainAudit",
+  "description": "Agentic smart contract security audit for Claude Code",
+  "owner": {
+    "name": "gegul"
+  },
+  "plugins": [
+    {
+      "name": "BugChainAudit",
+      "description": "Multi-agent smart contract security audit with persona ensemble, bundle splitting, and automated validation",
+      "version": "0.1.0",
+      "source": "./",
+      "category": "security"
+    }
+  ]
+}

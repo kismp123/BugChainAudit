@@ -1,0 +1,20 @@
+---
+keywords: Governor,proposal,quorum,ballot,vote,delegate,timelock,DAO
+---
+- Quorum manipulation: delegate→undelegate to lower total voting power?
+- Governance deadlock: rejection with no recovery path?
+- Vote replay: unstake→restake reuses voting power?
+- Parameter DoS: extreme governance param causes arithmetic revert?
+- Challenger collusion: challenger+bidder collude to extend expiration?
+- Disputed proposal side effects: disputed proposal still modifies state?
+- Prover/validator tier exploit: non-randomness in tier selection?
+- Guardian last-decision: bond return depends solely on last guardian?
+- Init function mismatch: wrong initializer removes functionality?
+- Proposer permitting: first block proposer check erroneous?
+- Native value forwarding: proposal with msg.value — executor contract holds enough ETH?
+- Guardian self-admin: guardian role self-administered with no governance override path?
+- Tier selection manipulation: non-random tier/role selection exploitable by timing or frontrunning?
+- Zero hash bypass: zero/empty hash accepted as valid — skips parent/merkle verification?
+- Re-prove blocked: higher-tier prover can't re-prove after initial proof submitted?
+- Unprotected pause trigger: pause/unpause callable by anyone via indirect path (e.g. _createAuction calls _pause without auth)? Missing access control on state-changing emergency function?
+- Delegatee blocks redelegation: malicious delegatee's callback/fallback reverts on undelegate or transfer? Voter permanently locked to malicious delegate?

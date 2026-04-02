@@ -1,0 +1,17 @@
+---
+keywords: oracle,priceFeed,latestRoundData,chainlink,TWAP,slot0,sqrtPriceX96,Pyth,getPrice
+---
+- Oracle staleness: updatedAt vs heartbeat? answeredInRound < roundId?
+- Oracle zero: price can be 0 or negative?
+- Asset-feed mismatch: WBTC↔BTC, stETH↔ETH?
+- Spot price manipulation: slot0/getReserves manipulable?
+- Oracle version desync: invalid version desyncs global/local state?
+- Oracle fee drain: deposit/withdraw without triggering settlement?
+- Uniswap cardinality: observationCardinality increase manipulates TWAP?
+- Expired oracle version: expired version returns normal price instead of invalid?
+- Empty order oracle: empty orders skip request but settlement uses price=0?
+- Market stall: oracle price unchanged → division by zero?
+- Token ordering assumption: oracle assumes specific token order (WETH last)?
+- Pending global mismatch: _loadContext uses wrong pendingGlobal?
+- Insufficient TWAP lookback: observation/activity check window shorter than intended? Doesn't reach oldest valid observation? Reverts on uninitialized slots?
+- Oracle normalizer missing: oracle price not normalized to expected decimals? Different feed decimals (8 vs 18) produce wrong collateral ratios? ~grep:decimals,normalize,OracleRef,scalingFactor,1e10,1e18~

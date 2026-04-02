@@ -1,0 +1,31 @@
+---
+keywords: ERC721,ERC1155,NFT,tokenURI,mint,burn,transferFrom,safeTransfer,airdrop
+---
+- ERC721 burn: custom burn() doesn't call ERC721._burn()? NFT exists after deletion?
+- Stale approvals: NFT approval not cleared after transfer?
+- SVG/XSS injection: tokenURI/SVG from user input without sanitization?
+- Token blocklist: USDC/USDT blocklist blocks shared pool transfers?
+- Decimals >18: decimal multiplier assumes ≤18? Tokens with >18 break scaling?
+- Safe wrapper revert: safeDecimals()/safeName() reverts on non-standard tokens?
+- Init code hash: CREATE2 uses wrong init code hash?
+- Collateral ID: refinance verifies tokenId matches loan's nftCollateralTokenId?
+- ERC165 interface ID: does contract return correct supportsInterface IDs per spec?
+- Inheritance error: does derived contract inherit correct Core vs full version?
+- Permission escalation: adding same permission twice escalates access?
+- Data key length check: insufficient length validation on allowed data keys?
+- Universal key abuse: universal data key permissions abused during ownership transfer?
+- burnToMint double use: can same NFT be used in burnToMint twice? Token not actually burned?
+- Artist signature forgery: can artist signatures be forged to impersonate collection creator?
+- Payout recipient: auction/sale payout goes to contract owner instead of token owner?
+- CREATE2 collision: can attacker precompute CREATE2 address collision to drain accounts?
+- Missing NFT receiver: contract lacks onERC721Received/onERC1155Received — safeTransferFrom reverts?
+- ERC-721 approve spec deviation: approve() allows operator == owner? Or missing auth check per spec?
+- Wrong inheritance hierarchy: derived token inherits base instead of full version? Missing functionality?
+- ERC-165 interface ID mismatch: supportsInterface returns wrong ID vs actual spec (ERC-721, LSP8)?
+- Allowed key length check: byte-length validation gap in data key permission verification?
+- Missing setTokenRoyalty: contract has setDefaultRoyalty but no per-token royalty override (ERC-2981)? Individual token royalties not configurable?
+- Generation/tier boundary off-by-one: maxGenerationId or tier cap uses < instead of <= (or vice versa)? Allows minting one extra beyond intended limit?
+- Royalty evasion via wrapper: selling parent NFT (club/vault/collection) transfers all child assets — bypasses per-child royalty (ERC-2981) entirely?
+- Parameter expansion reopens old state: increasing maxId/maxGeneration/maxTier reopens minting for previously closed generations/tiers retroactively?
+- JSON/HTML injection in tokenURI: user-controlled fields (name, description, attributes) injected into tokenURI JSON or on-chain SVG without escaping? Breaks metadata parsers or enables stored XSS?
+- tokenURI non-existent token: tokenURI reverts or returns empty for non-existent/burned tokenIds? ERC-721 spec requires specific behavior — deviation breaks marketplaces/indexers?
